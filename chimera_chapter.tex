@@ -1,0 +1,104 @@
+%
+% Sample SBC book chapter
+%
+% This is a public-domain file.
+%
+% Charset: ISO8859-1 (latin-1) áéíóúç
+%
+\documentclass{SBCbookchapter}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil,english]{babel}
+\usepackage{graphicx}
+\usepackage{array}
+
+\setcounter{chapter}{4}
+
+\author{Sam Haynes}
+\title{{Limitations} of composability of cis-regulatory elements in messenger RNA}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This chapter is about finding short cis-regulatory motifs in the 3'UTR of mRNA transcripts and detecting if their regulatory behaviour is dependent on the context of the whole transcript. This could be the context of the 5'UTR, ORF or the 3'UTR. We also introduced two motifs at the same time to see if they interact with each other. To begin, a literature search found 69 motifs previously identified as being enriched in transcripts that bind proteins or are highly expressed. Then, a linear model predicting transcript half life using codon usage, 3'UTR length and the presence or absence of these motifs was trained on two independent half life data sets. Using a greedy algorithm that maximised the AIC of the model, the 69 motifs were shortlisted to just 4 likely contributors. These 4 chosen motifs were inserted into two different native terminators and removed from one terminator that they appear in natively. Each motif-terminator set was also pair with three different promoters creating a library of 20 constructs. Using qPCR to detect changes in the expression of these constructs we then determined whether these motifs have the same effect in different contexts or whether they contribute the same across transcripts. We confirmed these effects are repeated in protein expression and in RNA-Seq expression. Finally we attempted to see if these transcripts had different PolyA sites in the total and decay populations but found different in only one case.
+\end{abstract}
+
+\section{Chapter 4 Introduction}
+
+Predicting expression of construct reliably is crucial for the progress of synthetic biology.
+
+Understanding gene regulation pathways requires more nuanced approaches that enable non-linear interactions. 
+
+Deep learning algorithms remain black-boxes that can learn complex behaviour but not in an interperatable way.
+
+Typically since the creation of modular synthesis tool kits the importance of considering context specific effects when combining parts is either ignored or considered not worth while.
+
+ First we provide further evidence for the important of considering interactions between regulartory regions by creating chimera constructs of promoter-ORF-terminator combinations.
+ 
+\section{Chapter 4 Results}
+
+\subsection{Chimera project}
+
+The mRNA abundance and protein abundance of these constructs we quantified using qPCR and plate reader measurements.
+
+qPCR was determined relative to the PKG1 constructs using tidyqpcr.
+
+The platereader measurements were determined using the omniplate python package which uses a Gaussian Processes algorithm to find the fluorescence at max growth rate.
+
+We showed that the contribution from promoter choice is the largest, then the contribution from terminator choice but there was also unpredictable differences in a terminators contribution to gene expression depending on ORF and promoter.
+
+\subsection{RNA-binding motifs}
+
+We then considered whether this context dependence is repeated by cis-regulatory elements within the promoter/orf regions.
+
+Using a literature search we found 69 suspected regulatory motifs found in the 3'UTrs of transcripts.
+
+We then used these motifs to predict the transcript half lives and shortlist them down to just 4.
+
+These remaining motifs were then inserted into two terminators and 3 of the motifs were removed from a terminator that they are natively part off.
+
+We had to make amendments for the fact that these motifs were conservation sequence and not actually unique in every case.
+
+The insertion of motifs into native terminators also required careful consideration of 3'UTR length isomers, secondary structures and motifs positions in native terminators.
+
+We paired these three terminators with three different promoters of different strengths to infer whether their contributions were linear. 
+
+Finally we also looked into whether two motifs inserted together have the same effect no matter what or if they interfered/cooperated with each other.
+
+Again investigated the construct mRNA abundance with qPCR but relative to the control construct with randomly generated sequence in the insertion sites.
+
+We found mRNA abundance correlates well with protein florescence using a subset of constructs.
+
+\subsection{Poly(A) site usage}
+
+We wanted to confirm that our motif insertion also did not change the polyA sites used, as this can significantly effect abundance.
+
+We do QuantSeq Rev which has a polyA anchored reads to determine polyA isomers and found a difference in one case.
+
+This RNA-Seq results also correlated with qPCR data.
+
+Also, we used 5PSeq to determine polyA usages in transcripts flag for decay with 5' cap removed but they didn't show any significant difference from the QuantSeq.
+
+\section{Chapter 4 Conclusions}
+
+Motifs can be context dependent for a whole host of reasons.
+
+They may have multi-faceted uses: binding certain proteins inside the nucleous and in the cytoplasm or during a heat shock response compared to normal exponential growth phases.
+
+They may be chaperon proteins for the actual effector protein which may only bind/phosphrelate ect in certain locations in the cell.
+
+ASH1 for example only suppresses translation of its target transcripts in the mother cell. Once it reaches the bud cell it is phosphorylated and stops being able to bind to its target and so the motif becomes useless.
+
+Motifs may also require presentation in certain secondary structures be successfully bound by their targets.
+
+Alternatively, motifs may need to be repeat or appear with the other motifs to fully complete their objective.
+
+Introducting non-linear models that can account for complex interactions between secondary structure, transcript location and motif interactions can help develop interperatiable models that better predict construct expression.
+
+Random forestion/partition regression models are quick, easier to conceptialise and highly developed non-linear models that have been used in other work previously.
+
+\bibliographystyle{apalike}
+\bibliography{sbc-template}
+
+\end{document}
