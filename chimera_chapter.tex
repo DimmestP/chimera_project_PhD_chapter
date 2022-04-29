@@ -54,15 +54,33 @@ We then considered whether this context dependence is repeated by cis-regulatory
 
 Using a literature search we found 69 suspected regulatory motifs found in the 3'UTrs of transcripts.
 
-We then used these motifs to predict the transcript half lives and shortlist them down to just 4.
+To reduce the list of 69 putative RNA binding protein motifs to a shortlist of 4, we trained a linear model to predict half life using the presence or absence of these motifs. Although many of the motifs did not have a recognised regulatory protein or pathway associated with them, the few that did were associated with mRNA degradation proteins such as PUF4. Therefore, we decided shortlisting the motifs according to through that best predict RNA half lives would be a feasible way of enriching for functional motifs that we could then inspect for context dependence. As all the motifs of interest were found predominately in the 3'UTRs of mRNA transcripts we used an extended yeast genome annotation, which includes the longest 3'UTR isoforms, to find the appearance of motifs in a gene. We found two genome-wide, non-invasive half life data sets available to train the model on. The data sets measure half life by introducing an alternative uracil nucleotide for a limited time (30 minutes) and measure the change in counts of transcripts created with this nucleotide as a measure of decay. The two data sets correlated reasonable well Figure 1A but the Cheng et al data set used multiple time points to infer decay rates and therefore was more sensitive to shorter half lives. We also found a previous study that predict motif contributions to gene expression which also modelled two other key predictors of half life: codon usage and length. We deciding to introduce these predictors to reduce the likelihood of confounding effects. We trained the model on both decay datasets and saw that we predicted a reasonable amount of the variation in transcript half life from this alone.To shortlist the motifs, we used a greedy algorithm maximising the AIC. This a penalised likelihood model that balances model complexity (i.e. the maximum number of motifs that the model can use at the same time) with accuracy. We then selected motifs that were significant in both data sets and had predicted contributions with reasonably high magnitudes. We also checked that these motifs occur frequently in native terminators. It is also clear that, as previous studies have suggested, it is difficult to detect motifs that increase half life. Therefore, we chose one motif suspected to increase half life but only occurs occasionally. The contributions to gene expression for each shortlisted motif correlated well for all but one motif.
 
-These remaining motifs were then inserted into two terminators and 3 of the motifs were removed from a terminator that they are natively part off.
+\begin{figure}[p]
+
+{\centering \includegraphics[width=0.98\linewidth]{figures/hlife_model_multi_fig} 
+
+}
+
+\caption{\textbf{A linear model of transcript half-life quantifies the effect of candidate terminator motifs on half-life.} (\textbf{A}) Correlation between the 2 transcript half-lives (\(\lambda\)), in minutes, reported in the (38) and (46) datasets. (\textbf{B}) Predicted contributions to log2 half-life for chosen motifs in the (38) and (46) datasets. (\textbf{C}) Predicted vs actual transcript half-lives calculated by a linear model of codon and motif usage trained on the (38) and (46) datasets.}\label{fig:hlife-decay-model}
+\end{figure}
+
 
 We had to make amendments for the fact that these motifs were conservation sequence and not actually unique in every case.
 
-The insertion of motifs into native terminators also required careful consideration of 3'UTR length isomers, secondary structures and motifs positions in native terminators.
 
-We paired these three terminators with three different promoters of different strengths to infer whether their contributions were linear. 
+Two native terminators were chosen as hosts for the cis-regulatory motifs of interested: TSA1 and RPS3. They were selected for having no motifs of interest in them natively, short 3'UTR lengths and high expression. Three 9bp motif insertion sites were created, extending the native 3'UTR by 27 bp. The exact position of these insertion sites were dictated by the position the motifs of interest appear in natively, avoiding host terminator secondary structures, leaving efficiency and position elements required for cleavage and poly adenylation and ensuring the motifs appear within the major poly(A) isoform. Motifs with lower magnitude contributions were inserted in duplicates, with the insertion site left with a random sequence. One construct has all three insertion sites occupied as it contained two different motifs to check for interaction effects. As a control we also created a control terminator with random sequences at all insertion sites. Figure 1A shows the positions of the three insertion sites for both terminators and which motifs were inserted where. The terminator constructs were paired with three different promoters: the native promoter for the host terminator, a high expression PGK1 promoter and a low expressing SRO9 promoter.
+
+The mRNA abundance of each construct was measure using qPCR. The delta delta Cq was calculated relative to the control construct of each set of promoter-terminator constructs. Figure 1B shows that the all of the motifs with predicting effects reducing transcript half-life correlate with a decrease in transcript abundance in RPS3 transcripts. The same is true for TSA1 transcripts show in Figure 1C. However, the one stabilising motif does not have a consistent effect on gene expression across the transcripts. It is also important to note that there isnt a large difference in expression between the WT constructs and the control constructs with random sequences inserted.  
+
+\begin{figure}[p]
+
+{\centering \includegraphics[width=0.98\linewidth]{figures/insertion_constructs_design_and_qpcr} 
+
+}
+
+\caption{\textbf{Motifs inserted into RPS3 and TSA1 host terminators change transcript abundance in RT-qPCR measurements.} (\textbf{A}) Design of motif insertion sites in native RPS3 and TSA1 terminators, highlighting random insertion used as a negative control. (\textbf{B}) Fold changes in transcript abundance for tRPS3 constructs paired with 3 promoters: pRPS3, pPGK1 and pSRO9. (\textbf{C}) Fold changes in transcript abundance for tTSA1 constructs paired with three promoters: pTSA1, pPGK1 and pSRO9. Each diamond represents a biological replicate, averaged over 3 technical replicates. The vertical line represents the mean of all 6 biological replicates. Fold changes are relative to the abundance of the mod\_NNN construct, i.e. $2^{\Delta\Delta Cq}$ (see methods).}\label{fig:tRPS3-tTSA1-design-and-qpcr}
+\end{figure}
 
 Finally we also looked into whether two motifs inserted together have the same effect no matter what or if they interfered/cooperated with each other.
 
