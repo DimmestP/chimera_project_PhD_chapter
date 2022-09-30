@@ -111,6 +111,7 @@
 % Section heading and numbering
 %=======================================================================
 \renewcommand{\section}{%
+    \onehalfspacing
 	\@startsection{section}{1}{0pt}{-6pt}{.1pt}
 		{\reset@font\sectionsize\bfseries}%
 }

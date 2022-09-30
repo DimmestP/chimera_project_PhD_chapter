@@ -11,6 +11,7 @@
 \usepackage[brazil,english]{babel}
 \usepackage{graphicx}
 \usepackage{array}
+\usepackage{setspace}
 
 \setcounter{chapter}{4}
 
@@ -26,39 +27,187 @@ This chapter is about finding short cis-regulatory motifs in the 3'UTR of mRNA t
 
 \section{Chapter 4 Introduction}
 
-Synthetic biology require increasingly more sensitive control of gene expression to be able to reliably meet the demands of production. The growth of synthetic biology from an academic discipline to a viable industry has shifted the demands required from the design of synthetic genetic pathways. Creating complex, non-native drugs using the biochemical pathways of host organisms has always required a balance between metabolic strain and product yield. As well as minimising metabolic strain, some synthetic gene pathways require very specific expression levels to control stages of production. We need to improve our ability to predict the gene expression of synthetic constructs in order for the develop of novel synthetic pathway to create even more complex drugs in a how yield efficient way. Our characterisation of terminator and promoter expression levels in yeast and modular combination of these with coding sequences of interest has developed significantly over the last decade. However, there are still a lot to learn about individual cis-regulatory motifs. Not only are there likely many more to discover, but even for those known we barely understand how their behaviour changes in different locations, stresses and cell cycle time points. This leads to unexpected behaviours in construct expression even in regularly used promoter-terminator pairings. Currently, the most common solution to this problem it to take advantage of the scale of high throughput assays now available. Automation of construct transformation, growth and characterisation is enabling tonnes of variants to be compared at the same time point. However, this still requires significant bio-manufacturing infrastructure, expertise and money. Instead, better modelling of gene expression could be a cost effective solution. A significant about of research is beings conducting into deep-learning models for predicting gene expression. Although work has been made in accurately predicting expression, the issue of interpretability of deep learning algorithms remains a complex problem that has not been overcome. Randomly combining different parts to determine the right expression level is becoming more realistic, but without an actual understanding of why each part behaviour differently leaves us liable to gene expression behaviour that even the latest models can't explain.  
+\subsection{Discovering sequence determinants of gene expression}
 
-Definition of cis-regulatory elements.
+Since the beginning of the molecular biology, biologists struggled to explain the size of the genomes of eukaryotes as it was quickly understood that only a fraction directly encoded protein sequences \cite{Thomas1971,MIRSKY1951}. 
+The discovery behind the diversity of connected expression pathways led to the theory that a significant portion of the non-coding genome was dedicated to the regulation of expression. 
+From the start it included the classification of regulatory sequences that either affect the expression of the gene it was part of or the expression of other genes \cite{Britten1969}. 
+However, later investigations in to the LacI operon quickly led to the definition of a promoter as the first kind of cis-regulatory element with its direct influence on the binding of PolyII and the initiation of transcription \cite{JACOB1964}. 
 
-Predicting expression of construct reliably is crucial for the progress of synthetic biology.
+The variety and precision of gene regulation across eukaryotes is dominated by the effects of cis-regulatory and trans-regulatory elements. 
+Today these two types are denoted trans-regulatory or cis-regulatory elements. Strict definitions of trans and cis regulatory elements are difficult to come by because of the highly redundant, flexible and multi-use nature of DNA sequences. 
+However, cis-regulatory elements typically affect transcript levels in an allele-specific manner, an influence that is usually exerted from a position coincident with the gene being regulated. (check for plagerism!!)
+Meanwhile trans-regulatory elements modify the expression of both alleles of a given transcript and can be find in different loci to the gene it acts upon \cite{Skelly2009}. 
+The existence of trans-regulatory elements has been known for over a century as the effects of hormones on embryonic differentiation had been well characterised. 
 
-Understanding gene regulation pathways requires more nuanced approaches that enable non-linear interactions. 
+However, cis-regulatory element also include: sequences imbuing mRNA secondary structures, RNA binding protein motifs, enhancer regions and much more. 
+The possible effects of regulatory elements has also been expanded to include contributions to localisation, degradation and translation. 
+This study primarily cis-regulatory element effects on transcription and degradation.
 
-Deep learning algorithms remain black-boxes that can learn complex behaviour but not in an interperatable way.
+\subsection{From regulatory elements to modular cloning.}
 
-Typically since the creation of modular synthesis tool kits the importance of considering context specific effects when combining parts is either ignored or considered not worth while.
+Unlocking the mechanisms through which genomic sequences regulate expression facilitated the manipulation of these pathways to create non-native genes and opened the world of synthetic biology. 
+Ten years after the discovery of promoters scientists created the first plasmid transformation of E coli \cite{Cohen1973}. 
+Then the discovery of restriction enzymes which allowed the precise cutting of genes first with type I, where the cutting site occurs within the recognition site, \cite{Arber2003,Meselson1968} and then the more useful typeII, recogision site is a few bases upstream of restriction site \cite{Smith1970,Kelly1970}.
+Understanding of the recombination mechanisms to enable insertion of  native genes into the genome (origins of modular cloning) \cite{Jackson1972,Cohen1973}. 
+Up until then work was mostly completed in prokaryotes, but work to efficiently transform yeast \cite{Beggs1978} and later mammalian cells \cite{Capecchi1989} enabled access to more complex synthesis machinery and to more complex proteins. 
+The creation of polymerase chain reaction dramatically increased the efficiency of transforming organisms and accessing new genes as regions of genomes could be selected and amplified by designing primers \cite{Saiki1988}. 
+With all of these tools developed in the 20th century, the 21st century started with dawn of synthetic circuits and regulatory clocks \cite{Elowitz2000,Gardner2000}.
 
- First we provide further evidence for the important of considering interactions between regulartory regions by creating chimera constructs of promoter-ORF-terminator combinations.
+With the tools to select genes and transform host organisms now at hand, the last 20 years of pioneering synthetic biology research as been defined by the standardisation of libraries of regulatory parts. 
+BioBricks is the defacto library of choice that pioneers to the "pick and mix" paradigm \cite{Knight2003}.
+Shifting the focus from fundamental cell biology to metabolic engineering, users no longer needed to understand the specifics genomes to find suitable regulatory part put instead focus on the end products (drugs or sensors) . 
+Bioengineering is quickly becoming a staple of industry with production of high value compounds with high yields reduced waste \cite{Krivoruchko2015}.
+Genetically modified organisms have now been create to detect oil spills, arsenic in water and even the presence of specific viruses \cite{Wan2019,Willardson1998,Tancharoen2019}.
+
+Modular assembly is now routine: modern DNA synthesis and cloning techniques allow the construction of complex gene pathways through the combinatorial assembly of chosen parts \cite{Curran2013,Lee2015,Garcia2018,Andreou2018}.
+Several groups have constructed standardised libraries comprising promoter (including 5’UTR) and terminator (including 3’UTR) parts, which can be combined to achieve desired expression of synthesized proteins.
+The characterisation of all possible promoter-terminator pairings is impractical, so standardised libraries generally characterise parts independently, for example testing many promoters with the same coding sequence and terminator \cite{Lee2015}.
+Similarly, even massively parallel approaches to characterise smaller CREs usually explore a large library of promoter elements with a single terminator \cite{Sharon2012}, or conversely a library of terminators with a single promoter \cite{Shalem2015}. 
+Because these experiments do not measure interactions between different parts, they rely on the untested assumption that those parts have more or less identical effects across different contexts.
+
+\subsection{Limitations in predicting gene expression}
+
+Modern synthetic biology task demand increase control of gene expression. The design of synthetic pathways often need specific steps to produce tightly defined protein levels which are created by combining parts from independently characterised part libraries. Creating complex, non-native drugs using the biochemical pathways of host organisms has always required a balance between metabolic strain and product yield. However, the construction of multi-step synthetic pathways often suffer from unexpected regulatory interference between these parts than change expected expression levels.  Currently, the most common solution to this problem it to take advantage of the scale of high throughput assays now available. Automation of construct transformation, growth and characterisation is enabling tonnes of variants to be compared at the same time point. However, this still requires significant bio-manufacturing infrastructure, expertise and money. The development of high throughput RNA-Seq and flow cytometry has provided a solution to this problem by encouraging simultaneous testing of thousands of constructs and picking those that behave as expected. This remains a costly and high expertise endeavour and highlights how much their remains to be understood about gene regulation. Meanwhile, the continued development of statistical models to accurately predict gene expression from DNA sequences offers another route to better predict behaviour without needing to conduct experiments. Its downside remains the difficultly in interpreting the decisions made from machine learning algorithms which could be significant in understanding the biological mechanisms through which gene expression is regulated. Understanding gene regulation pathways requires more nuanced approaches that enable interactions. 
+
+Computational methods for the discovery and quantification of short CREs, such as sequence motifs recognised by regulatory proteins, also tend to rely on models of independent effects, that is, composability.
+Prominent methods for mapping CRE sequence-function relationships include predicting functional data with short sequence features, often using linear models (Shalgi et al. 2005; Cheng et al. 2017; Vijayabaskar et al. 2019); or, directly comparing the sequences of genes with similar characteristics to determine the presence of short
+consensus sequence motifs (Hogan et al. 2008; Kretz et al. 2013) using motif discovery software (Elemento, Slonim, and Tavazoie 2007; Bailey et al. 2015).
+Both of these approaches make the implicit approximation that the contribution of a short CRE is independent of context, so that the effect of combining motifs is composed of a linear sum (on the appropriate scale) of the individual CRE contributions.
+The approximation that short CREs act independently helps to find elements that have clear contributions, and to simplify a vast search space that would be made exponentially larger by accounting for CRE interactions. 
+However, framing the search for CREs around independent contributions from short motifs overlooks multi-part motifs, interactions between motifs, and that motifs may be active only in specific contexts.
+
+Here, we first show the changing regulatory behaviour of terminator sequences paired with different promoters and coding sequences. We measure the fluorescence of 120 chimera constructs and highlight the irregular but significant changes in gene expression between conditions. Then, we wanted to investigate whether the changes in regulatory behaviour is reflected in the cis-regulatory elements within these regions. We conduct a analysis of contributions to half life from suspected cis-regulatory elements using published datasets. Using a subset of these motifs shown to have a contribution we insert these motifs into host terminators and show that there effect on gene expression correlates significantly with their predict effect. This shows that through analysis of published data sets can significantly improve the accuracy of experimental results without requiring new experiments. Once, the contributions to gene expression were confirmed we then show that these motifs on their own have different contributions to gene expression depending context. qPCR was determined relative to the PKG1 constructs using tidyqpcr.
  
 \section{Chapter 4 Results}
 
-\subsection{Chimera project}
+\subsection{Terminator effects on gene expression depend on cis-regulatory context}
 
-The mRNA abundance and protein abundance of these constructs we quantified using qPCR and plate reader measurements.
+To investigate the context dependence of cis-regulatory regions, we created a library of 120 constructs (Figure \ref{fig:pro-ter-platereader-mCherry-mTurq-norm}A), containing all combinations of 6 promoters (including 5'UTR), 2 coding sequences, and 10 terminators (including 3'UTR).
+We selected promoters and terminators from native yeast genes spanning a variety of different expression patterns and functions (Table \ref{tab:terminator-summary-table}).
+To choose specific sequence lengths for the terminators of our constructs, we referred to published measurements of median 3'UTR length (37) because sequences that are necessary and sufficient for efficient transcriptional termination are found upstream of the termination site (46).
+For terminators with measured length under 200nt, we used the standardised parts length of 200nt from the YeastFab library.
+The 2 coding sequences (CDS) expressed mCherry or mTurquoise2 fluorescent proteins, which are bright fluorophores with only 30\% amino acid identity (47, 48).
 
-qPCR was determined relative to the PKG1 constructs using tidyqpcr.
 
-The platereader measurements were determined using the omniplate python package which uses a Gaussian Processes algorithm to find the fluorescence at max growth rate.
 
-We showed that the contribution from promoter choice is the largest, then the contribution from terminator choice but there was also unpredictable differences in a terminators contribution to gene expression depending on ORF and promoter.
+\begin{figure}[p]
 
-\subsection{RNA-binding motifs}
+{\centering \includegraphics[width=0.8\linewidth]{figures/pro_ter_swap_protein_and_norm_rna_exp_figure} 
 
-We then considered whether this context dependence is repeated by cis-regulatory elements within the promoter/orf regions.
+}
 
-Using a literature search we found 69 suspected regulatory motifs found in the 3'UTrs of transcripts.
+\caption{\textbf{Terminator contributions to gene expression are promoter, coding sequence and length dependent.} (\textbf{A}) Design of chimeric reporter constructs with all combinations of 6 promoters, 2 fluorescent proteins, and 10 terminators, on a centromeric plasmid. Terminators highlighted with an asterisk have a terminator length longer than the library standard of 200bp because they have a median 3'UTR length greater than 200bp according to (37). (\textbf{B}) Relative protein abundance from each terminator, normalized to a reference terminator tPGK1 for each matched promoter. The plot shows statistical summaries (mean and standard error) of at least 6 replicates for high-expression promoter data shown in Figure 1A. (\textbf{C}) RT-qPCR mRNA results targeting the mCherry ORF for pRPS3-mCherry-tRPS3 and pSRO9-mCherry-tSRO9 constructs with differing terminator lengths. (\textbf{D}) mCherry fluorescence correlates with RT-qPCR mRNA abundance for 3 promoters paired with all 10 terminators. Note that both axes use a \(log_2\) scale.}\label{fig:pro-ter-platereader-mCherry-mTurq-norm}
+\end{figure}
 
-To reduce the list of 69 putative RNA binding protein motifs to a shortlist of 4, we trained a linear model to predict half life using the presence or absence of these motifs. Although many of the motifs did not have a recognised regulatory protein or pathway associated with them, the few that did were associated with mRNA degradation proteins such as PUF4. Therefore, we decided shortlisting the motifs according to through that best predict RNA half lives would be a feasible way of enriching for functional motifs that we could then inspect for context dependence. As all the motifs of interest were found predominately in the 3'UTRs of mRNA transcripts we used an extended yeast genome annotation, which includes the longest 3'UTR isoforms, to find the appearance of motifs in a gene. We found two genome-wide, non-invasive half life data sets available to train the model on. The data sets measure half life by introducing an alternative uracil nucleotide for a limited time (30 minutes) and measure the change in counts of transcripts created with this nucleotide as a measure of decay. The two data sets correlated reasonable well Figure 1A but the Cheng et al data set used multiple time points to infer decay rates and therefore was more sensitive to shorter half lives. We also found a previous study that predict motif contributions to gene expression which also modelled two other key predictors of half life: codon usage and length. We deciding to introduce these predictors to reduce the likelihood of confounding effects. We trained the model on both decay datasets and saw that we predicted a reasonable amount of the variation in transcript half life from this alone.To shortlist the motifs, we used a greedy algorithm maximising the AIC. This a penalised likelihood model that balances model complexity (i.e. the maximum number of motifs that the model can use at the same time) with accuracy. We then selected motifs that were significant in both data sets and had predicted contributions with reasonably high magnitudes. We also checked that these motifs occur frequently in native terminators. It is also clear that, as previous studies have suggested, it is difficult to detect motifs that increase half life. Therefore, we chose one motif suspected to increase half life but only occurs occasionally. The contributions to gene expression for each shortlisted motif correlated well for all but one motif.
+
+
+\begin{table}
+
+\caption{\label{tab:terminator-summary-table}\textbf{Summary of the terminator library.} The common gene name from which the terminator is extracted from is included alongside its systematic name. The median 3'UTR reported by (37) is a median over the lengths of each distinct isoform they detect. The usage of each motif is signified by S, for promoter-terminator swaps, or M, for motif insertion or deletion. A short summary of the protein function is included.}
+\centering
+\fontsize{5}{7}\selectfont
+\begin{tabular}[t]{>{\centering\arraybackslash}p{3em}|>{\centering\arraybackslash}p{6em}|>{\centering\arraybackslash}p{4em}|>{\centering\arraybackslash}p{6em}|>{\centering\arraybackslash}p{3em}|>{\centering\arraybackslash}p{6em}}
+\hline
+\begingroup\fontsize{7}{9}\selectfont \textbf{Gene Name}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Systematic Name}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Median 3’UTR Length}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Construct Terminator Length}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Usage}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Function}\endgroup\\
+\hline
+PGK1 & YCR012W & 158 & 189 & S & Glycolysis\\
+\hline
+RPS3 & YNL178W & 86 & 200 & M\&S & Ribosomal\\
+\hline
+RPS13 & YDR064W & 92 & 200 & S & Ribosomal\\
+\hline
+PAB1 & YER165W & 150 & 200 & S & RNA Binding\\
+\hline
+HSP26 & YBR072W & 164 & 200 & S & Heat Shock\\
+\hline
+CLN2 & YPL256C & 203 & 200 & S & Cell Cyclin\\
+\hline
+SRO9 & YCL037C & 543 & 545 & S & RNA Binding\\
+\hline
+TOS6 & YNL300W & 256 & 256 & S & Cell Wall\\
+\hline
+SUN4 & YNL066W & 198 & 198 & S & Cell Wall\\
+\hline
+PMA1 & YGL008C & 421 & 421 & S & Transmembrane ATPase\\
+\hline
+TSA1 & YML028W & 112 & 219 & M & Redox Homestasis\\
+\hline
+PIR1 & YKL164C & 235 & 358 & M & Cell Wall\\
+\hline
+\end{tabular}
+\end{table}
+
+Measuring fluorescence with a plate reader showed that, as expected, promoter choice dominated overall protein output.
+We observed up to 100-fold changes in fluorescence between the 4 highest expressing promoters (Supplementary Figure \ref{fig:raw-pro-ter-swap-protein-fluo}A) and the 2 lowest expressing promoters (Supplementary Figure \ref{fig:raw-pro-ter-swap-protein-fluo}B; mCherry log2 fold change = 7.33, p.value = 0.000).
+Expression from the stress-induced pHSP26 was notably more variable than from pPGK1 and pRPS's, across biological replicates, when combined with both coding sequences and a variety of terminators.
+We also confirmed that most differences in protein outputs are accounted for by changes in mRNA abundance by checking a subset of mCherry constructs using RT-qPCR (\(R = 0.888\), Figure \ref{fig:pro-ter-platereader-mCherry-mTurq-norm}D).
+
+Terminators also affect protein output with 5-fold changes in fluorescence seen within the same promoter-CDS sets (pPGK1-mTurq-tPMA1 log2 fold change = -2.73, p.value =\(1.19 \times 10^{-41}\)), relative to the tPGK1 terminator of each group (Figure \ref{fig:pro-ter-platereader-mCherry-mTurq-norm}B, Supplementary Table \ref{tab:norm-terminator-sig-effect}).
+We focus on constructs with high-expression promoters due to the poor signal to noise ratio at low expression levels.
+The interaction of coding sequence and terminator is seen most clearly for tPAB1.
+tPAB1 is consistently the most highly expressed terminator in mTurquoise2 constructs, but is more variable in mCherry constructs.
+Meanwhile, tPGK1 highlights the interactions of promoter and terminator.
+tPGK1 is one of the most highly expressing terminators when paired with pPGK1 and pHSP26, but is up to 40\% lower in expression when paired with pRPS3 or pRPS13.
+Overall, our results show that the contributions of terminators (including 3'UTRs) to gene expression depend on other parts within the gene.
+
+We further investigated the effects of terminators on mRNA levels by comparing constructs with extended vs truncated terminators.
+It is known that disrupting the transcription termination signal lowers expression (10, 46).
+However, standardised parts libraries often assume a fixed terminator length for all genes, which is likely to omit the termination signal for genes with longer terminators.
+In the case of the YeastFab parts library (5) the fixed terminator length is 200bp.
+We compared a gene with a median 3'UTR length less than 200bp, RPS3 to a gene with a median 3'UTR length greater than 200bp, SRO9.
+The median length of the native RPS3 3'UTR is 86nt (37); truncating the terminator to 86bp or 59bp reduces transcript protein output by almost 2-fold (86bp Fold Change = 0.544, p-value = \(2.6 \times 10^{-4}\); 59bp Fold Change = 0.517, p-value = \(7.8 \times 10^{-6}\); Figure \ref{fig:pro-ter-platereader-mCherry-mTurq-norm}C).
+The median length of the native SRO9 3'UTR is 543nt (37); extending the terminator length to 543bp increases transcript protein output by almost 2-fold (Fold Change = 0.581, p-value = 0.01; Figure \ref{fig:pro-ter-platereader-mCherry-mTurq-norm}C).
+This validates our assay's ability to detect known regulatory signals affecting transcription termination, while highlighting the importance of using well-informed annotations to construct parts libraries for synthetic biology.
+Note that we used the longer 543bp SRO9 terminator, and a similarly extended 421bp PMA1 terminator, for the main set of constructs (Figure \ref{fig:pro-ter-platereader-mCherry-mTurq-norm}).
+
+\subsection{Candidate cis-regulatory elements contribute to transcript decay rates}
+
+Next, we investigated how the regulatory effects of CREs contained within terminator regions depend on their context.
+First, 69 suitable CREs to test for context dependence were found through a literature search.
+All were suspected sequence motifs for mRNA binding proteins, several directly associated with proteins involved in mRNA degradation (3, 12, 13).
+Any motifs that were found in fewer than 6 gene 3'UTRs, as annotated by (37), were removed.
+
+We quantified the regulatory effects of the remaining 38 candidate motifs by applying a linear model predicting half-life to 2 recent transcriptome-wide analyses of mRNA decay that used metabolic labeling (41, 49).
+These datasets are loosely correlated in their half-life measurements across 4188 genes reported in both datasets, \(R = 0.63\) (Figure \ref{fig:hlife-decay-model}A). However, (41) estimated substantially smaller half-lives.
+(41) also had greater coverage of genes in the yeast genome, 5529 vs 4304, and used multiple time points to determine half-lives.
+Following (13), we constructed a linear model to predict a transcript's half-life using the counts of motifs in its 3'UTR, the length of the 3'UTR, and the relative codon usage in each transcript's coding sequence (see Material and Methods).
+The linear model performed similarly on both datasets by explaining 44\% and 41\% of the variability in half-lives for the (41) and (49) datasets respectively (Figure \ref{fig:hlife-decay-model}C).
+This predictive power is comparable to the squared correlation between the datasets (\(R^2 = 0.40\)).
+Motifs that did not significantly contribute to the model were automatically filtered out using a greedy algorithm maximising the Akaike information criterion (AIC) during both training stages.
+Approximately 1.7\% of the variance is explained by 7 significant motifs, with 42.0\% explained by codon usage (Supplementary Table \ref{tab:hlife-variance-table}), consistent with previous analyses (13, 50).
+The top 7 most significant motifs from the (41) data showed similar regulatory behaviour when tested on their own in the (49) data, except for TGTAAATA which was stabilising in one dataset and destabilising in another, as we later discuss (Figure \ref{fig:hlife-decay-model}B).
+
+We selected 4 motifs for exploring context dependence: TGTAHMNTA, GTATACCTA, HWNCATTWY, and ATATTC (Table \ref{tab:motif-summary-table}).
+TGTAHMNTA and GTATACCTA were chosen as they had the largest coefficients amongst significant decay and stability motifs, respectively.
+HWNCATTWY was chosen due to its statistically significant effect in both datasets and, as it co-occurs with TGTAHMNTA in 68 native 3'UTRs, because it could be used for testing motif interactions.
+The final selected motif was ATATTC, as it is a statistically significant decay motif in both datasets, and it has been previously shown to lower mRNA abundance when inserted in reporter constructs (13).
+Functionally, TGTAHMNTA is the binding motif for Puf4p, and HWNCATTWY is associated with Khd1p/Hek2p-bound transcripts (3).
+However, it is not known how ATATTC and GTATACCTA affect mRNA decay.
+
+
+
+\begin{table}
+
+\caption{\label{tab:motif-summary-table}\textbf{Summary of shortlisted motif characteristics.} The first 3 columns hold the consensus sequence for each motif and the exact versions deleted from or inserted into the host terminators. Then, we report the paper from which the motif was selected from; (3), (12) or (13). Next, each motif's coefficient given by the linear model predicting either the (41) or the (49) half-life datasets are included. Finally, the table includes notes on motif functions.}
+\centering
+\fontsize{5}{7}\selectfont
+\begin{tabular}[t]{>{\centering\arraybackslash}p{6em}|>{\centering\arraybackslash}p{5.2em}|>{\centering\arraybackslash}p{5.5em}|>{\centering\arraybackslash}p{3.5em}|>{\centering\arraybackslash}p{2.6em}|>{\centering\arraybackslash}p{4em}|>{\centering\arraybackslash}p{2.6em}|>{\centering\arraybackslash}p{4em}|>{\centering\arraybackslash}p{4em}}
+\hline
+\begingroup\fontsize{7}{9}\selectfont \textbf{Consensus Seq}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Inserted Motif}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Deleted Motif}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Source}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Chan Coef}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Chan p.value}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Sun Coef}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Sun p.value}\endgroup & \begingroup\fontsize{7}{9}\selectfont \textbf{Notes}\endgroup\\
+\hline
+GTATACCTA & GTATACCTA & GTATACCTA & Shalgi & 0.500 & 1.9e-02 & 0.280 & 0.3300 & Unknown\\
+\hline
+ATATTC & ATATTC & ATATTC & Cheng & -0.075 & 1.4e-03 & -0.170 & 0.0000 & Decay motif\\
+\hline
+HWNCATTWY & TTTCATTTC & CTTCATTTC ATACATTAT AATCATTAT & Hogan & -0.084 & 4.9e-06 & -0.061 & 0.0026 & Khd1/Hek2 associated motif\\
+\hline
+TGTAHMNTA & TGTACAATA & TGTACATTA & Hogan & -0.230 & 0.0e+00 & -0.056 & 0.1800 & Puf4p binding motif\\
+\hline
+\end{tabular}
+\end{table}
+
+
 
 \begin{figure}[p]
 
@@ -66,16 +215,42 @@ To reduce the list of 69 putative RNA binding protein motifs to a shortlist of 4
 
 }
 
-\caption{\textbf{A linear model of transcript half-life quantifies the effect of candidate terminator motifs on half-life.} (\textbf{A}) Correlation between the 2 transcript half-lives (\(\lambda\)), in minutes, reported in the (38) and (46) datasets. (\textbf{B}) Predicted contributions to log2 half-life for chosen motifs in the (38) and (46) datasets. (\textbf{C}) Predicted vs actual transcript half-lives calculated by a linear model of codon and motif usage trained on the (38) and (46) datasets.}\label{fig:hlife-decay-model}
+\caption{\textbf{A linear model of transcript half-life quantifies the effect of candidate terminator motifs on half-life.} (\textbf{A}) Correlation between the 2 transcript half-lives (\(\lambda\)), in minutes, reported in the (41) and (49) datasets. (\textbf{B}) Predicted contributions to log2 half-life for chosen motifs in the (41) and (49) datasets. (\textbf{C}) Predicted vs actual transcript half-lives calculated by a linear model of codon and motif usage trained on the (41) and (49) datasets.}\label{fig:hlife-decay-model}
 \end{figure}
 
+\subsection{Quantification of differential expression due to motif insertion or mutagenesis in multiple 3'UTRs}
 
-We had to make amendments for the fact that these motifs were conservation sequence and not actually unique in every case.
+To quantify the effects and composability of selected motifs in different contexts, we designed a further set of reporter constructs (Figure \ref{fig:tRPS3-tTSA1-design-and-qpcr}A).
+We first chose the ribosomal protein terminator tRPS3, as it was the only terminator in our initial library that did not contain any of the selected motifs.
+We selected thioredoxin peroxidase tTSA1 as the second host terminator because it also lacks selected motifs and has similar length to tRPS3.
+In each host terminator we chose 3 motif insertion sites, selecting for: minimum impact on transcript secondary structure, avoiding known transcription termination elements, and matching the positions of motifs in native genes.
+Having 3 insertion sites enabled us to quantify combinations of motifs, including duplicates of weaker motifs to increase the likelihood of detecting a clear effect on gene expression.
+We chose TGTACAATA and TTTCATTTC sequences as explicit versions of the TGTAHMNTA and HWNCATTWY consensus motifs respectively, and checked that these explicit versions have similar predicted effects on half-life transcriptome-wide (Supplementary Tables \ref{tab:HWNCATTWY-motif-coef}, \ref{tab:TGTAHMNTA-motif-coef}).
+Altogether, 7 variant terminators were designed for these 2 host terminators: the wildtype terminator, a control to test the insertion sites with randomly generated sequences, 4 testing the effects of inserting each motif individually and a final variant to test interactions between the TGTAHMNTA and HWNCATTWY motifs.
+We created a construct library by pairing each terminator with three different promoters; its native promoter pairing (pRPS3 or pTSA1), the high-expression promoter pPGK1, and the low-expression promoter pSRO9.
 
+Motifs predicted to affect half-life affect mRNA abundance when inserted into tRPS3 in reporter constructs (Figure \ref{fig:tRPS3-tTSA1-design-and-qpcr}B).
+We measured mRNA abundance by RT-qPCR across 6 biological replicates, each quantified in 3 technical replicates and normalised by the \(\Delta Cq\) method against values from 3 reference mRNAs (see methods).
+Insertion of 2 copies of ATATTC (mod\_NAA) generally lowers the mRNA abundance, as much as 4-fold when paired with the pRPS3 promoter.
+Insertion of either TGTAHMNTA (mod\_NTN), or 2 copies of HWNCATTWY (mod\_HNH), tends to decrease mRNA abundance, and their combined insertion (mod\_HTH) tends to decrease mRNA abundance even further.
+The putative stability motif GTATACCTA (mod\_NGG) does not consistently or strongly affect mRNA abundance.
+However, comparison of the WT and control (mod\_NNN) terminators does show that the creation of the insertion sites alone has an effect on mRNA levels (Supplementary Table \ref{tab:insertion-construct-ttest}).
 
-Two native terminators were chosen as hosts for the cis-regulatory motifs of interested: TSA1 and RPS3. They were selected for having no motifs of interest in them natively, short 3'UTR lengths and high expression. Three 9bp motif insertion sites were created, extending the native 3'UTR by 27 bp. The exact position of these insertion sites were dictated by the position the motifs of interest appear in natively, avoiding host terminator secondary structures, leaving efficiency and position elements required for cleavage and poly adenylation and ensuring the motifs appear within the major poly(A) isoform. Motifs with lower magnitude contributions were inserted in duplicates, with the insertion site left with a random sequence. One construct has all three insertion sites occupied as it contained two different motifs to check for interaction effects. As a control we also created a control terminator with random sequences at all insertion sites. Figure 1A shows the positions of the three insertion sites for both terminators and which motifs were inserted where. The terminator constructs were paired with three different promoters: the native promoter for the host terminator, a high expression PGK1 promoter and a low expressing SRO9 promoter.
+Inserting the same motifs into our second host terminator gives qualitatively similar results (Figure \ref{fig:tRPS3-tTSA1-design-and-qpcr}C).
+Decay motifs generally lead to decay, although ATATTC (mod\_NAA) has a weaker effect in tTSA1 than in tRPS3, and TGTAHMNTA (mod\_NTN) has a stronger effect in tTSA1 than tRPS3.
+The putative stability motif GTATACCTA (mod\_NGG) again has little effect.
 
-The mRNA abundance of each construct was measure using qPCR. The delta delta Cq was calculated relative to the control construct of each set of promoter-terminator constructs. Figure 1B shows that the all of the motifs with predicting effects reducing transcript half-life correlate with a decrease in transcript abundance in RPS3 transcripts. The same is true for TSA1 transcripts show in Figure 1C. However, the one stabilising motif does not have a consistent effect on gene expression across the transcripts. It is also important to note that there isnt a large difference in expression between the WT constructs and the control constructs with random sequences inserted.  
+We next quantified the effects of removing decay motifs from a native yeast terminator.
+We selected the cell wall protein PIR1 as our host terminator as it is only 258 bp ((37)) and a \emph{de-novo}-synthesizable terminator that contains the ATATTC, TGTAHMNTA, and HWNCATTWY motifs.
+We designed 8 terminators in which the motif occurrences in tPIR1 were replaced by scrambled sequences (Figure \ref{fig:tPIR1-design-and-qpcr}A).
+We found that the removal of almost any decay motif from tPIR1 results in an increase in mRNA levels (Figure \ref{fig:tPIR1-design-and-qpcr}B; Supplementary Table \ref{tab:deletion-construct-ttest}).
+
+We confirmed that motif-dependent changes in mRNA abundance are reflected in protein abundance by measuring the fluorescence from a subset of reporter constructs with native promoter-terminator pairings (Supplementary Figure \ref{fig:protein-vs-RNA-plot-motifs}).
+The high correlation (\(R = 0.96, 0.68, 0.86\) for tRPS3, tTSA1, tPIR1 constructs respectively) demonstrates that these combinations of decay motifs that change mRNA abundance also change the protein output, as expected.
+
+Comparison of mRNA abundance across all constructs (Figure \ref{fig:tRPS3-tTSA1-design-and-qpcr}B, \ref{fig:tRPS3-tTSA1-design-and-qpcr}C, \ref{fig:tPIR1-design-and-qpcr}B) shows motif contributions change in magnitude but not direction depending on the context of the rest of the construct.
+The insertion of almost any decay motif into tTSA1 or tRPS3 results in a decrease in mRNA abundance, and removal of these from from tPIR1 results in an increase in mRNA abundance.
+However, the quantitative effects vary depending both on the immediate motif context in the host terminator and on the more distant context given by the promoter.
 
 \begin{figure}[p]
 
@@ -86,52 +261,109 @@ The mRNA abundance of each construct was measure using qPCR. The delta delta Cq 
 \caption{\textbf{Motifs inserted into RPS3 and TSA1 host terminators change transcript abundance in RT-qPCR measurements.} (\textbf{A}) Design of motif insertion sites in native RPS3 and TSA1 terminators, highlighting random insertion used as a negative control. (\textbf{B}) Fold changes in transcript abundance for tRPS3 constructs paired with 3 promoters: pRPS3, pPGK1 and pSRO9. (\textbf{C}) Fold changes in transcript abundance for tTSA1 constructs paired with three promoters: pTSA1, pPGK1 and pSRO9. Each diamond represents a biological replicate, averaged over 3 technical replicates. The vertical line represents the mean of all 6 biological replicates. Fold changes are relative to the abundance of the mod\_NNN construct, i.e. $2^{\Delta\Delta Cq}$ (see methods).}\label{fig:tRPS3-tTSA1-design-and-qpcr}
 \end{figure}
 
-A third native terminator was selected which contained three of the four motifs in its 3'UTR. PIR1 contains an ATATTC, an TGTAHMNTA, and three HWNCATTWY motifs. The exact sequence of the three HWNCATTWY motifs differ from each other and from the sequence inserted into the other two terminators. Figure 1A shows the position of these motifs in the 3'UTR PIR1 and the table in Figure 1B shows the combination of constructs created to explore the behaviour of these motifs. To remove these motifs from the native sequence we replaced the motif with a random sequence of the same size. We also check that these randomly generated sequences do not unintentionally introduce any known motifs.First we created three constructs each with all copies of one motif removed. We also created constructs with only one of the different versions of HWNCATTWY removed to explored the positional and sequences effects. Finally we created constructs with the HWNCATTWY motifs and one of the other two motifs removes to check for interaction effects. The qPCR abundance was measure realtive to the WT terminator as no control construct was needs to check for changes in poly(A) length. The qPCR results show that the removal of any of the the suspected decay motifs leads to an increase of transcript abundance. Also, as more motifs were removed the greater the increase in transcript abundance. Similar patterns in transcript abundance were seen across the three promoter pairings. 
-
 \begin{figure}[p]
 
-{\centering \includegraphics[width=0.98\linewidth]{figures/tPIR1_design_and_qpcr} 
+{\centering \includegraphics[width=0.98\linewidth]{figures/tPIR1_design_and_qpcr.png} 
 
 }
 
 \caption{\textbf{Motifs removed from PIR1 host terminators change transcript abundance in RT-qPCR measurements.} (\textbf{A}) Design of PIR1 constructs with combinations of motifs replaced by random nucleotide sequences. (\textbf{B}) Fold changes in transcript abundance for tPIR1 constructs paired with 3 promoters: pPIR1, pPGK1 and pSRO9. Each diamond represents a biological replicate, averaged over 3 technical replicates. The vertical line represents the mean of all 6 biological replicates. Fold changes are relative to the abundance of the WT construct, i.e. $2^{\Delta\Delta Cq}$ (see methods).}\label{fig:tPIR1-design-and-qpcr}
 \end{figure}
 
-Finally we also looked into whether two motifs inserted together have the same effect no matter what or if they interfered/cooperated with each other.
+\subsection{Motif effects on gene expression depend both on terminator context and promoter pairing}
 
-Again investigated the construct mRNA abundance with qPCR but relative to the control construct with randomly generated sequence in the insertion sites.
+We compared the effects of cis-regulatory motifs on mRNA abundance to predicted effects inferred from the transcriptome-wide measurements of half-life.
+First, we trained a linear model using the RT-qPCR results to estimate the change in log2 mRNA abundance (i.e.~\(\Delta Cq\)) due to the presence of a motif in each promoter and terminator combination.
+Using a simple model of transcript production and decay, we can argue that changes in mRNA abundance are directly proportional to changes in mRNA half-life (see methods).
+Therefore, we compared the motif's estimated change in log2 mRNA abundance to that predicted due to changes in log2 half-life, estimated from our transcriptome-wide analysis of the (41) dataset.
+The effect of motifs in reporter constructs is correlated with the predictive model, but the strength of the correlation depends on context (Figure \ref{fig:hlife-predict-vs-abundance-and-motif-context-dependence}A).
+Constructs with inserted motifs (i.e.~tRPS3 and tTSA1 constructs) had a lower correlation with predicted effects than constructs with deleted motifs (i.e.~tPIR1 constructs).
+Interestingly, motif effects on mRNA abundance appear to be greater than that predicted from their effect on half-life when their host terminator is paired with its native promoter.
 
-We found mRNA abundance correlates well with protein florescence using a subset of constructs.
+We next directly compared the estimated coefficients for each motif's effect on mRNA abundance across promoter-terminator pairing (Figure \ref{fig:hlife-predict-vs-abundance-and-motif-context-dependence}B).
+The effect of a motif depends on terminator context.
+For example, ATATTCA reduces mRNA abundance substantially more when inserted in tRPS3 than in tTSA1 (pRPS3-tRPS3 log2 Fold Change = -0.99, p-value = \(1.5 \times 10^{-13}\); pTSA1-tTSA1 log2 Fold Change = -0.26, p-value = \(7.3 \times10^{-3}\)).
+Meanwhile, TGTAHMNTA significantly reduces mRNA abundance when inserted in tTSA1, but not tRPS3, whichever promoter is chosen (pRPS3-tRPS3 log2 fold Change = -0.18, p-value = 0.37; pTSA1-tTSA1 log2 fold Change = -1.30, p-value = \(1.0 \times10^{-7}\)).
+Promoter choice also influences the magnitude of a motif's contribution to mRNA levels.
+For the ATATTC, TGTAHMNTA and HWNCATTWY motifs the greatest reduction in mRNA abundance occurred when native promoter-terminator pairings are measured.
+This is true for all 3 decay motifs across all 3 host terminators, except for HWNCATTWY in pRPS3-tRPS3 constructs (Supplementary Table \ref{tab:motif-abundance-effect-table}).
 
-\subsection{Poly(A) site usage}
+Regulatory interactions between different motifs also change depending on host terminator and promoter context.
+We included an interaction term that quantifies how the effect of including both HWNCATTWY and TGTAHMNTA together differs from the sum of the effects of including these motifs individually.
+The combination of TGTAHMNTA and HWNCATTWY in tRPS3 has no significant effect beyond a simple sum of their individual effects when paired with pPGK1 (p-value = 0.39).
+However, when tRPS3 is paired with pRPS3 or pSRO9, the combination has a greater effect than expected from the sum of each motif's individual effect (pRPS3 log2 fold Change = -0.47, p-value = 0.0015; pSRO9 log2 fold Change = -0.37, p-value = 0.02).
+The combination of TGTAHMNTA and HWNCATTWY in tTSA1 has no additional effect (pTSA1 p-value = 0.67, pSRO9 p-value = 0.91), except when paired with pPGK1, where it has a lesser effect than expected (log2 fold Change = 0.33, p-value = 0.02).
+Finally, the combination of TGTAHMNTA and HWNCATTWY in tPIR1 has no significant additional effect (Supplementary Table \ref{tab:motif-abundance-effect-table}).
 
-We wanted to confirm that our motif insertion also did not change the polyA sites used, as this can significantly effect abundance.
+\begin{figure}[p]
 
-We do QuantSeq Rev which has a polyA anchored reads to determine polyA isomers and found a difference in one case.
+{\centering \includegraphics[width=0.85\linewidth]{figures/qPCR_model_coef_and_pred_vs_exp_abund} 
 
-This RNA-Seq results also correlated with qPCR data.
+}
 
-Also, we used 5PSeq to determine polyA usages in transcripts flag for decay with 5' cap removed but they didn't show any significant difference from the QuantSeq.
+\caption{\textbf{Promoter and terminator context alter the regulatory effect of motifs.} (\textbf{A}) Predicted change in transcript abundance inferred from transcriptome-wide motif contributions to half-life, compared to RT-qPCR measurements of reporter transcript abundance. The y-axis shows statistical summaries (mean and standard error) of 6 replicates for data shown in figures 4 and 5. The fold change is relative to the mod\_NNN construct in each promoter-terminator pairing for the tRPS3 and tTSA1 sets, and relative to the WT constructs for tPIR1 sets. Native promoter panels show the promoter paired with the terminator from the same set, e.g. pRPS3 with tRPS3. (\textbf{B}) Motif contributions to fold changes in mRNA abundance for reporter constructs with different promoter and terminator contexts. This is calculated by a linear model with a coefficient for the effect of each motif in each set, applied to $\Delta Cq$ against 3 reference genes. The last column shows the interaction term between TGTAHMNTA and HWNCATTWY.}\label{fig:hlife-predict-vs-abundance-and-motif-context-dependence}
+\end{figure}
+
+\subsection{Inserting motifs into terminators shifts poly(A) site usage downstream}
+
+We next mapped poly(A) site usage in a subset of reporter constructs, for 2 reasons.
+First, changes in poly(A) site usage might mean that motifs placed in our reporters were unintentionally absent from the mature mRNA.
+Second, we wanted to know if motif effects on mRNA abundance might be due to changes in the poly(A) site usage.
+We chose three constructs with large effect sizes in the qPCR results: mod\_NAA, mod\_HTH and mod\_NTN, together with WT and mod\_NNN controls, within three promoter-terminator contexts: pRPS3-tRPS3, pPGK1-tRPS3 and pTSA1-tTSA1.
+For these constructs we performed paired-ends sequencing of 3' mRNA-Seq libraries following QuantSeq protocol ((51) and see methods).
+Read 1 allows precise inference of poly(A) site position while read 2 generally overlaps the CDS and allows distinguishing terminators in native loci from reporter constructs.
+We mapped the reads to genome sequences extended by the relevant reporter plasmid sequence.
+
+We detected 1000s of reads on each reporter construct, which is enough to quantify expression confidently as well as to assign poly(A) sites.
+We checked that counts of all other RNAs are highly correlated between samples, giving us confidence that changes in construct detection are meaningful (Supplementary Figure \ref{fig:rnaseq-QC-correlation}).
+Transcript abundance, relative to mod\_NNN, for most constructs correlates strongly with qPCR results (Figure \ref{fig:quantseq-polyA-site-usage}A).
+However, some constructs were detected as more abundant by RNA-seq for reasons that are unclear.
+
+We display the poly(A) sites as the cumulative fraction of poly(A)-site reads mapped at each location downstream of construct stop codons, out of all reads mapped to the terminator (Figure \ref{fig:quantseq-polyA-site-usage}B).
+We confirmed that in other genes the poly(A) site locations were highly reproducible across samples, giving us confidence that changes in reporter poly(A) sites are meaningful (Supplementary Figure \ref{fig:rnaseq-QC-QuantSeq-and-5PSeq-genomic-polyA}).
+Poly(A) sites are in the same relative positions in native loci and the constructs with wild-type terminator (Supplementary Figure \ref{fig:rnaseq-QC-genomic-vs-plasmid-polyA}).
+Then, we compared 3'end positions of reads between modified and wild-type reporter constructs to determine the poly(A) site usage.
+In both wild-type and mod\_NNN tTSA1 constructs, the relative usage of major poly(A) sites does not significantly change (Site 1 p-value = 0.068 and Site 2 p-value = 1).
+Surprisingly, tRPS3 mod\_NNN constructs appear to be using a novel upstream poly(A) site, that appears in about \(50%
+\) percent of reads and is located upstream of the 3rd motif insertion site (Site 1 p-value = 0.016; Figure \ref{fig:quantseq-polyA-site-usage}B).
+
+Next, we compared changes in poly(A) site usage between constructs with different inserted motifs.
+We highlight the 2 major poly(A) sites for the tRPS3 constructs and 2 for the tTSA1 constructs (black vertical lines on the mod\_NNN constructs in Figure \ref{fig:quantseq-polyA-site-usage}B) and track the cumulative fraction of reads upstream of each major site.
+However, for tRPS3 constructs there is a distinct shift to downstream poly(A) sites in constructs with verified, rather than random, motifs inserted.
+There are also smaller differences in poly(A) site usage between constructs with different motifs (Supplementary Figure \ref{fig:quantseq-polyA-site-usage}C, Supplementary Table \ref{tab:polya-usage-effect-table}).
+
+\begin{figure}[p]
+
+{\centering \includegraphics[width=0.85\linewidth]{figures/polya_usage_plot_QuantSeq.png} 
+
+}
+
+\caption{\textbf{Inserting motifs into RPS3 and TSA3 terminators changes 3'UTR length.} A subset of constructs were chosen to investigate changes in poly(A) site usage: WT, mod\_NNN, mod\_NTN, mod\_NAA, and mod\_HTH; within three promoter-terminator contexts: pRPS3-tRPS3, pPGK1-tRPS3, and pTSA1-tTSA1. (\textbf{A}) Comparison of construct transcript abundance as independently measured by qPCR and RNA-Seq assays. Transcript abundance was normalised to the median abundance of  plasmid URA3, genomic PGK1, and RPS3 or TSA1 transcripts for each construct. Fold change is relative to the mod\_NNN construct in each promoter-terminator context. The black diagonal line represents the expected values if RNAseq and qPCR results correlated perfectly. (\textbf{B}) Cumulative count of reads mapped downstream of WT (grey) and mod\_NNN (golden) construct stop codons as fraction of total reads mapped to the constructs terminator. The x-axis shows the terminator sequence of the mod\_NNN construct with inserted random motifs highlighted with a black background. WT reads have been shifted downstream to align with the mod\_NNN sequence by accounting for motif insertion sites. Major poly(A) sites have been highlighted by a black vertical line. (\textbf{Left}) shows the poly(A) sites for the pRPS3-tRPS3 and pPGK1-tRPS3 promoter-terminator constructs. (\textbf{Right}) shows the same for the pTSA1-tTSA1 constructs. (\textbf{C}) Similar to Figure \textbf{B} but with each motif insertion construct plotted separately. Columns designate cumulative plots from different terminator constructs and rows designate cumulative plots from different promoter contexts.}\label{fig:quantseq-polyA-site-usage}
+\end{figure}
+
+We then asked whether modifications in the 3'-UTR region impact 5'-3' degradation following mRNA decapping, using the 5PSeq method targeted to the 3'-end regions of mRNA (52).
+5PSeq can detect changing ribosome dynamics through 5'-3' co-translational degradation, however, the novel modification to 5Pseq here uses an anchored oligo(dT) reverse primer so detects only the poly(A)-site proximal region of the mRNA instead of the entire coding sequence.
+The 5Pseq counts per gene are highly reproducible between samples (Supplementary Figure \ref{fig:rnaseq-QC-correlation}B), and the abundances of reporter mRNAs from different constructs correlate well between 5PSeq and QuantSeq data (Supplementary Figure \ref{fig:rnaseq-QC-correlation}C).
+Our 5PSeq data finds no detectable changes in 5'-phosphorylated intermediates between wild-type and modified reporter constructs, and thus does not indicate detectable changes in ribosome dynamics near the 3' end of transcripts (Supplementary Figure \ref{fig:rnaseq-QC-genomic-vs-plasmid-polyA}, \ref{fig:combined-5p-end-read-plot}).
+It does confirm the behaviour of the inserted motifs correlates with qPCR results and that an upstream alternative polyadenylation site is introduced in the tRPS3 constructs (Supplementary Figure \ref{fig:polyA-site-usage-5Pseq}).
+Moreover, the poly(A) site distribution for each construct matches that obtained from QuantSeq data, suggesting that 3'-UTR isoforms are not differentially degraded using this pathway regardless of the motifs inserted (Supplementary Figure \ref{fig:relative-polya-counts}, Supplementary Table \ref{tab:polya-usage-effect-5PSeq-table}).
+Finally, the abundances of different reporter mRNAs from different constructs correlate well between
+5PSeq and QuantSeq data (Supplementary Figure \ref{fig:rnaseq-QC-correlation}C).
+
+Overall, poly(A) site mapping showed that most reporter mRNAs retained the expected poly(A) site and motifs, except for a new alternative poly(A) site in tRPS3 mod\_NNN constructs.
+This highlights the potential for unexpected consequences from composing cis-regulatory elements, even when introducing ``random'' insertions of no known function.
+
 
 \section{Chapter 4 Conclusions}
 
-Motifs can be context dependent for a whole host of reasons.
+This work explores the limitations of compostability in cis-regulatory elements. The effects of interacting promoter and terminator regions has been well documented in the synthetic biology literature. However, the narrative pin this degree of unpredictably as a nuance in path to creating reliable genetic circuits and high value cell factories. The focus on simply creating reliable components with predictable contributions overlooks the evidence for a far more complex picture of regulatory mechanisms that are biologically interesting in itself. We first extend the current literature to show the variability of terminators from known regulatory genes in response to differing coding regions and promoters. By measuring protein fluorescence using a plate reader, we show the expected results of gene expression being dominated by promoter choice and then terminator choice. Then, we highlight significant changes in several terminator contributions to gene expression. To extend our understanding of this unexplained behaviour we decided to test the regulatory behaviour of cis-regulatory elements within the terminator, naming short sequence motifs within the 3'UTR. Building on previous work by Cheng et al, we shortlisted several prospective 3'UTR motifs using a linear model predicting half life. We inserted or removed these motifs into three native host terminators and paired them with three promoters and two coding sequences to inspect their behaviour. First, we showed that three of the four motifs performed exactly as expected on their affect on transcript levels as measure by qPCR according to the linear model. This is assuming their contributions to gene expression where predominately due to changes in transcript half life. The fourth motif was the only one predicted to increase stability but with high variability in its magnitude and its lack of significant contribution to gene expression was unsurprising. After confirming the effectiveness of shortlisting prospective motifs of interest with rigorous analysis of published data, we returned to the task of investigating whether their contributions to gene expression were variable according to their context as can be seen in the terminator regions. The magnitude of their contributions changed for all motifs across promoter, coding sequence and host terminator. Of particular interest is how the contributions of two motifs inserted together into the same terminator could change when paired with different terminators.
 
-They may have multi-faceted uses: binding certain proteins inside the nucleous and in the cytoplasm or during a heat shock response compared to normal exponential growth phases.
+We verified the qPCR results by conducting QuantSeq and investigated if positional effects could be contributing to the differing behaviour. In TSA1 the polyA site usage was unchanged between WT and the insertion constructs. However, in RPS3 a new alternative polyA site had been unintentionally introduced in between insertion sites 2 and 3 for all constructs. AS TGTAHMNTA and ATATTC are both inserted in site 2 (and ATATTC is also inserted into site 3) there is a chance that their behaviour is affected in RPS3.
+Interestingly all tTSA1 constructs have 2 ATATTC motifs but they have less effect on transcript level than tRPS3 which has just one copy in nearly 50\% of transcripts. Perhaps ATATTC needs to be close to PolyA site, so the novel PolyA site is actually beneficial, but ATATTC is not near polyA site in tPIR1 and still has greater effect than in tTSA1. Meanwhile TGTAHMNTA could be nullifed by the proximity to the novel polyA site although it is interesting that only in tRPS3 is the combined effect of HWNCATTWY and TGTAHMNTA synergistic. Further constructs with insertion sites across the terminators are required to confirm the positional effects.
 
-They may be chaperon proteins for the actual effector protein which may only bind/phosphrelate ect in certain locations in the cell.
+We believe that the study of composibility of cis-regulatory elements is an understudied research area. Not only does it promise to improve the predictability of contributions to gene expression required to enhance the design of synthetic pathways, but also a fruitful region for discovering novel mechanisms through which cell regulate their expression. We have shown that changes in contributions according to context can affect cis-regulatory elements such as motifs as well as regions like terminators. We have also shown that changes in contributions due to co-occuring motifs can be measured using linear interaction terms trained on qPCR data. Our work designing suitable insertion sites into host terminators to detect these changes also offers a framework to inspect context effects on cis-regulatory elements at scale. 
 
-ASH1 for example only suppresses translation of its target transcripts in the mother cell. Once it reaches the bud cell it is phosphorylated and stops being able to bind to its target and so the motif becomes useless.
-
-Motifs may also require presentation in certain secondary structures be successfully bound by their targets.
-
-Alternatively, motifs may need to be repeat or appear with the other motifs to fully complete their objective.
-
-Introducting non-linear models that can account for complex interactions between secondary structure, transcript location and motif interactions can help develop interperatiable models that better predict construct expression.
-
-Random forestion/partition regression models are quick, easier to conceptialise and highly developed non-linear models that have been used in other work previously.
-
-\bibliographystyle{apalike}
-\bibliography{sbc-template}
+%\bibliographystyle{apalike}
+%\bibliography{sbc-template}
 
 \end{document}
